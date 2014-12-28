@@ -159,4 +159,24 @@ describe('ServiceType', function () {
     expect(s.subtypes[0], 'subtypes[0]').to.equal('46c20544');
     done();
   });
+
+  it('should get name from fullyQualified', function (done) {
+    var s = new ServiceType('Kodi (OpenELEC01)._airplay._tcp.local');
+    expect(s.name, 'name').to.equal('airplay');
+    expect(s.protocol, 'protocol').to.equal('tcp');
+    expect(s.descriptor, 'descriptor').to.equal('Kodi (OpenELEC01)');
+    console.log(s);
+    done();
+  });
+
+  it('should err on parse melloware.local', function (done) {
+    expect(fn).to.throw(Error,
+      'type string must not be empty');
+
+    done();
+
+    function fn(){
+      new ServiceType('melloware.local');
+    }
+  });
 });

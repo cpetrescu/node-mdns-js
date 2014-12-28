@@ -13,7 +13,7 @@ var browser = mdns.createBrowser(); //defaults to mdns.ServiceType.wildcard
 
 browser.on('ready', function onReady() {
   console.log('browser is ready');
-  browser.discover();
+  //browser.discover();
 });
 
 
@@ -21,7 +21,16 @@ browser.on('update', function onUpdate(data) {
   console.log('data:', data);
 });
 
-//stop after timeout
-setTimeout(function onTimeout() {
+
+// read from stdin
+process.stdin.resume();
+
+// stop on Ctrl-C
+process.on('SIGINT', function () {
   browser.stop();
-}, TIMEOUT);
+
+  // give deregistration a little time
+  setTimeout(function onTimeout() {
+    process.exit();
+  }, 1000);
+});
